@@ -15,8 +15,18 @@ class Article extends Model
         return $this->belongsToMany(Tag::class, 'article_tags', 'article_id', 'tag_id' ); 
     }
 
+    public function countLikes()
+    {
+        return $this->likes() - $this->unelike(); 
+    }
+
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Like::class)->where('ball', ">", 0)->count();
+    }
+
+    public function unelikes()
+    {
+        return $this->hasMany(Like::class)->where('ball', "<", 0)->count();
     }
 }
